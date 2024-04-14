@@ -10,6 +10,9 @@ db.authenticate()
     .then(()=> console.log('Database connected ...'))
     .catch(err=> console.log("Error : ", err))
 
+// // Handlebars
+// app.engine('handlebars', exhbs({ defaultLayout: 'main'}));
+// app.set('view engine', 'handlebars');
 
 app.get('/', (req, res)=>{
     console.log("Server.js is Listening");
