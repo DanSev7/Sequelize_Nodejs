@@ -8,8 +8,11 @@ const Gig = require('../Models/Gig')
 // Add a gig
 router.post('/addGig', async (req, res) => {
     try {
-        const data = await Gig.create(req.body);
-        res.json(data);
+        const data = req.body;
+        console.log("The data inserted to the gigs table is : ", data);
+        const addData = await Gig.create(data);
+        console.log("Data : ", data);
+        res.json(addData);
     } catch (error) {
         res.status(500).json({error: error.message});
     }   
@@ -28,31 +31,34 @@ router.get('/', async(req, res)=>{
 
 // Update
 
-router.post('/UpdateGig/:id', async (req, res)=>{
+router.patch('/UpdateGig', async (req, res)=>{
     try {
-        const { id } = req.params;
-        const [updated] = await Gig.update(req.body, {
-            where: {id},
-        });
+        const { id } = req.query;
+        console.log("Id from the Updated request is : ", id);
+        const updatedData = req.body;
+        console.log("Updated Data is : ", updatedData);
+        const updated = await Gig.update(updatedData, id);
+        console.log("Updated is : ", updated);
         if(updated) {
             const updateGig = await Gig.findOne({where: {id}});
-            res.json(updatedGig);
+            res.json(updateGig);
         } else {
             res.status(404).json({message: 'Gig not found'});
         }
         
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: error.message});
     }
 })
 
 // Delete
 
-router.delete('/DeleteGig/:id', async (req, res)=>{
+router.delete('/DeleteGig', async (req, res)=>{
     try {
-        const { id } = req.params;
-        console.log("The id from the delete request is : ", {id: id});
-        const deleted = await Gig.destroy({id});
+        const {id} = req.query;
+        console.log("The id from the delete request is : ", id);
+        const deleted = await Gig.destroy(id);
         
         if(deleted) {
             res.status(204).send();

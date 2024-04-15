@@ -5,6 +5,8 @@ const path = require('path');
 const PORT = 3230;
 const app = express ();
 const db = require('./Config/db.js');
+app.use(bodyParser.json());
+
 // Test DB
 db.authenticate()
     .then(()=> console.log('Database connected ...'))
